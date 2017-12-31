@@ -14,28 +14,34 @@ $(document).ready(function() {
       $("#buttonsContainer").append(sportsButton)
     }
   }
+
   $("#Submit").on("click", function(event){
     //prevent page refresh
     event.preventDefault()
     //checks if Input is empty or not, and proceeds
     if ($('#newCar').val() === "") {
-      //prevent user from putting blank divs in HTML
-      alert("Type in a valid car name")
+      //prevent user from putting blank buttons in HTML
+      alert("Type a name to submit")
     } else {
-      //empty container for other divs
+      //empty the container for other button divs
       $("#buttonsContainer").empty()
-
+      //variable to hold value that is typed
       var newCar = $("#newCar").val()
-
+      //add the variable's value to the sportsCars array
       sportsCars.push(newCar)
-
+      //re-display the newly updated array in HTML
       populateButtons();
+      //enable the carClick function
       carClick();
-
+      //set the input form back to default after inserting current value to array
       $('#newCar').val("")
-
     }
   })
+
+  $("#Clear").on("click", function(event){
+    //resets page to defaults
+  })
+
   //event click for car buttons
   function carClick() {
     $(".item").on("click", function(event){
@@ -45,7 +51,7 @@ $(document).ready(function() {
       event.preventDefault()
 
       var name = $(this).text()
-      var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + name + "&api_key=GskWlsLDt8Qxyare1sPpFYC8ZeH0SWaC&limit=10"
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + name + "&api_key=GskWlsLDt8Qxyare1sPpFYC8ZeH0SWaC&limit=10"
 
       $.ajax({
         url: queryURL,
@@ -60,16 +66,16 @@ $(document).ready(function() {
 
         for (var i = 0; i < responseArray.length; i++ ) {
 
+            var maxWidth = responseArray[i].images.fixed_height.width
+
             var gifyDiv = $("<div>")
-            gifyDiv.addClass('card text-white bg-secondary mb-3')
-            gifyDiv.attr("style", 'max-width: 600px')
+            gifyDiv.addClass('card text-white bg-secondary mb-3 margin')
             var gifyRating = $("<div>")
             gifyRating.addClass('card-header')
             gifyRating.text("Rating: " + responseArray[i].rating)
             var gifyBody = $("<div>")
             gifyBody.addClass('card-body')
             var gifyImg = $("<img>")
-            gifyImg.addClass('img')
             gifyImg.attr("src", responseArray[i].images.fixed_height_still.url)
             gifyImg.attr("src-animate", responseArray[i].images.fixed_height.url)
             gifyImg.attr("src-still", responseArray[i].images.fixed_height_still.url)
@@ -84,12 +90,9 @@ $(document).ready(function() {
 
         }
 
-        $('img').off().on("click", function(event) {
-
-          event.preventDefault()
+        $('img').off().on("click", function() {
 
           var status = $(this).attr("data")
-
 
           if (status === "still") {
             $(this).attr("src", $(this).attr("src-animate"));

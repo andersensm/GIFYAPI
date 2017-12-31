@@ -2,7 +2,7 @@ body {
   background-color: #2b3e50;
 }
 .container {
-  margin-top: 10px;
+  margin-top: 15px;
 }
 .btn {
   margin: 2px;
@@ -17,4 +17,7 @@ footer {
 .footer {
   margin: auto;
   text-align: center;
+}
+div.margin {
+  margin-left: 15px;
 }
